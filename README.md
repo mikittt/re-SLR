@@ -11,3 +11,11 @@ python scripts/extract_target_feats.py -d refcocog -s google --batch_size 40 -g 
 ```
 python scripts/extract_image_feats.py -d refcocog -s google --batch_size 40 -g 0
 ```
+
+```
+python scripts/train_vlsim.py -d refcocog -s google -g 0 --id slr
+```
+
+```
+python train.py -d refcocog -s google -g 0 --id slr --id2 ver1
+```
