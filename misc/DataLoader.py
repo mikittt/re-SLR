@@ -14,7 +14,7 @@ def load_sentToInfo(save_path='/data/unagi0/mtanaka/sentToInfo.json'):
         print('sent info converting...')
         sys.path.insert(0, osp.join('./', 'pyutils/refer2'))
         from refer import REFER
-        data_root = '  # contains refclef, refcoco, refcoco+, refcocog and images
+        data_root = './dataset/anns/original'  # contains refclef, refcoco, refcoco+, refcocog and images
         dataset = 'refgta'
         splitBy = 'utokyo'
         refer = REFER(data_root, dataset, splitBy)

@@ -14,7 +14,7 @@ import cplex ## install by conda install -c ibmdecisionoptimization cplex
 
 from model import VisualEncoder, LanguageEncoder, LanguageEncoderAttn, CcaEmbedding, LanguageModel, ListenerReward
 from misc.DataLoader import DataLoader
-
+import config
 
 def main(params):
     target_save_dir = osp.join(params['save_dir'],'prepro', params['dataset']+'_'+params['splitBy'])
@@ -376,28 +376,7 @@ def check_pairwise(pairwise, ref_beam_to_ix, all_beams):
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--data_json', default='data.json', help='output json file')
-    parser.add_argument('--data_h5', default='data.h5', help='output h5 file')
-    parser.add_argument('--ann_feats_h5', default='ann_feats.npy', help='ann feats file')
-    parser.add_argument('--image_feats_h5', default='image_feats.npy', help='image, Variable feats file')
-    parser.add_argument('--save_dir', default='')
-    parser.add_argument('--old', '-old', action='store_true')
-
-    parser.add_argument('--model_root', default='', 
-                        help='root location in which models are stored')
-    parser.add_argument('--data_root', default='', type=str, 
-                        help='data folder containing images and four datasets.')
-    parser.add_argument('--dataset', '-d', default='refcoco', type=str, 
-                        help='refcoco/refcoco+/refcocog')
-    parser.add_argument('--splitBy', '-s', default='unc', type=str, 
-                        help='unc/google')
-    parser.add_argument('--gpu_id', '-g', default=0)
-    parser.add_argument('--split', default='testA')
-    parser.add_argument('--id', default='met')
-    parser.add_argument('--beam_width', default='10', type=str)
-    parser.add_argument('--write_result', default=0, type=int)
-    args = parser.parse_args()
+    args = config.parse_opt()
     params = vars(args) # convert to ordinary dict
     main(params)
     

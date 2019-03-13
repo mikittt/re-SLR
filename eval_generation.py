@@ -12,6 +12,7 @@ from models.base import VisualEncoder, LanguageEncoder, LanguageEncoderAttn
 from models.Listener import CcaEmbedding
 from models.LanguageModel import vis_combine, LanguageModel
 from misc.eval_utils import compute_margin_loss, computeLosses, language_eval
+import config
 
 def eval_all(params):
     target_save_dir = osp.join(params['save_dir'],'prepro', params['dataset']+'_'+params['splitBy'])
@@ -101,33 +102,6 @@ def eval_all(params):
 # python eval_generation.py -id 96 -beam 3
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser()
-
-    # data file
-    parser.add_argument('--data_json', default='data.json', help='output json file')
-    parser.add_argument('--data_h5', default='data.h5', help='output h5 file')
-    parser.add_argument('--ann_feats', default='ann_feats.npy', help='ann feats file')
-    parser.add_argument('--image_feats', default='image_feats.npy', help='image, Variable feats file')
-    parser.add_argument('--save_dir', default='')
-    parser.add_argument('--old', '-old', action='store_true')
-    
-    # options
-    parser.add_argument('--data_root', default='', type=str, 
-                        help='data folder containing images and four datasets.')
-    parser.add_argument('--dataset', '-d', default='refcoco', type=str, 
-                        help='refcoco/refcoco+/refcocog')
-    parser.add_argument('--splitBy', '-s', default='unc', type=str, 
-                        help='unc/google')
-    
-    parser.add_argument('--id', '-id',default='met')
-    parser.add_argument('--id2', '-id2',default='')
-    parser.add_argument('--gpu_id', '-g', type=int, default=0)
-    parser.add_argument('--split', '-split',default='testA')
-    parser.add_argument('--batch_size', type=int, default=1)
-    parser.add_argument('--seq_per_ref', default=3)
-    parser.add_argument('--beam_width','-beam',type=int, default=10)
-    parser.add_argument('--lamda','-lam',type=float, default=0.2)
-    # argparse
-    args = parser.parse_args()
+    args = config.parse_opt()
     params = vars(args) # convert to ordinary dict
     eval_all(params)

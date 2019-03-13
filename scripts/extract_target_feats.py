@@ -12,6 +12,8 @@ import chainer
 from chainer import cuda, Variable
 import chainer.links as L
 
+import config
+
 def extract_feature(params):
     if params['dataset'] in ['refcoco', 'refcoco+', 'refcocog']:
         image_root =  params['mscoco_root']
@@ -74,28 +76,6 @@ def extract_feature(params):
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser()
-
-    # data file
-    parser.add_argument('--data_json', default='data.json', help='output json file')
-    parser.add_argument('--data_h5', default='data.h5', help='output h5 file')
-    parser.add_argument('--ann_feats', default='ann_feats.npy', help='ann feats file')
-    parser.add_argument('--save_dir', default='')
-    parser.add_argument('--old', '-old', action='store_true')
-
-    # options
-    parser.add_argument('--data_root', default='', type=str, 
-                        help='data folder containing images and four datasets.')
-    parser.add_argument('--mscoco_root', default='', type=str)
-    parser.add_argument('--gta_root', default='', type=str)
-    parser.add_argument('--dataset', '-d', default='refcoco', type=str, 
-                        help='refcoco/refcoco+/refcocog')
-    parser.add_argument('--splitBy', '-s', default='unc', type=str, 
-                        help='unc/google')
-    parser.add_argument('--batch_size', default=40)
-    parser.add_argument('--gpu_id', '-g', type=int, default=0)
-
-    # argparse
-    args = parser.parse_args()
+    args = config.parse_opt()
     params = vars(args) # convert to ordinary dict
     extract_feature(params)

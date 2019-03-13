@@ -25,6 +25,8 @@ from scipy.misc import imread, imresize
 import matplotlib.pyplot as plt
 # add root path
 import os.path as osp
+import config
+
 ROOT_DIR = '.'
 
 def build_vocab(refer, params):
@@ -176,8 +178,8 @@ def main(params):
 	target_save_dir = osp.join(params['save_dir']+'/prepro', dataset+'_'+splitBy)
 
 	if params['old']:
-		params['output_json'] = 'old'+params['output_json']
-		params['output_h5'] = 'old'+params['output_h5']
+		params['data_json'] = 'old'+params['data_json']
+		params['data_h5'] = 'old'+params['data_h5']
 		
 	# mkdir and write json file
 	if not osp.isdir(target_save_dir):
@@ -186,7 +188,7 @@ def main(params):
 	# load refer
 	sys.path.insert(0, osp.join(ROOT_DIR, 'pyutils/refer2'))
 	from refer import REFER
-	refer = REFER(data_root, dataset, splitBy, old_version=params['old'])
+	refer = REFER(data_root, '_', dataset, splitBy, old_version=params['old'])
 
 	# create vocab
 	vocab, sentToFinal = build_vocab(refer, params)
@@ -206,38 +208,22 @@ def main(params):
 			   'word_to_ix': wtoi,
 			   'ix_to_cat': refer.Cats
 			   }, 
-		open(osp.join(target_save_dir, params['output_json']), 'w'))
-	print ('%s written.' % osp.join(target_save_dir, params['output_json']))
+		open(osp.join(target_save_dir, params['data_json']), 'w'))
+	print ('%s written.' % osp.join(target_save_dir, params['data_json']))
 
 	# write h5 file which contains /sentences
-	f = h5py.File(osp.join(target_save_dir, params['output_h5']), 'w')
+	f = h5py.File(osp.join(target_save_dir, params['data_h5']), 'w')
 	seqz_L, zseq_L = encode_captions(sentences, wtoi, params)
 	f.create_dataset("seqz_labels", dtype='uint32', data=seqz_L)
 	f.create_dataset("zseq_labels", dtype='uint32', data=zseq_L)
 	f.close()
-	print ('%s writtern.' % osp.join(target_save_dir, params['output_h5']))
+	print ('%s writtern.' % osp.join(target_save_dir, params['data_h5']))
 	# check_encoded_labels(sentences, seqz_L, zseq_L, itow)
 
 
 if __name__ == '__main__':
 
-	parser = argparse.ArgumentParser()
-
-	# output json
-	parser.add_argument('--output_json', default='data.json', help='output json file')
-	parser.add_argument('--output_h5', default='data.h5', help='output h5 file')
-	parser.add_argument('--save_dir', default='')
-	parser.add_argument('--old', '-old', action='store_true')
-
-	# options
-	parser.add_argument('--data_root', default='', type=str, help='data folder containing images and four datasets.')
-	parser.add_argument('--dataset', '-d', default='refcoco', type=str, help='refcoco/refcoco+/refcocog')
-	parser.add_argument('--splitBy', '-s', default='unc', type=str, help='unc/google')
-	parser.add_argument('--max_length', type=int, help='max length of a caption')  # refcoco 10, refclef 10, refcocog 20, refgta 20
-	parser.add_argument('--word_count_threshold', default=5, type=int, help='only words that occur more than this number of times will be put in vocab')
-
-	# argparse
-	args = parser.parse_args()
+	args = config.parse_opt()
 	params = vars(args) # convert to ordinary dict
 	print ('parsed input parameters:')
 	print (json.dumps(params, indent = 2))
