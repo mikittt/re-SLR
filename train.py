@@ -32,8 +32,8 @@ def train_all(params):
     if params['old']:
         params['data_json'] = 'old'+params['data_json']
         params['data_h5'] = 'old'+params['data_h5']
-        params['image_feats_h5'] = 'old'+params['image_feats_h5']
-        params['ann_feats_h5'] = 'old'+params['ann_feats_h5']
+        params['image_feats'] = 'old'+params['image_feats']
+        params['ann_feats'] = 'old'+params['ann_feats']
         params['id'] = 'old'+params['id']
         params['word_emb_path'] = 'old'+params['word_emb_path']
         
@@ -50,8 +50,8 @@ def train_all(params):
     cuda.get_device(gpu_id).use()
     xp = cuda.cupy
     
-    featsOpt = {'ann':osp.join(target_save_dir, params['ann_feats_h5']),
-                'img':osp.join(target_save_dir, params['image_feats_h5'])}
+    featsOpt = {'ann':osp.join(target_save_dir, params['ann_feats']),
+                'img':osp.join(target_save_dir, params['image_feats'])}
     loader.loadFeats(featsOpt) 
     loader.shuffle('train')
     
@@ -168,7 +168,7 @@ def train_all(params):
                 
         if iteration % params['losses_log_every']==0:
             acc = xp.where(rl_crit.reward>0.5, 1, 0).mean()
-            print('{} iter : train loss {}, acc : {} reward_mean : {}'.format(iteration,loss.data, acc, rl_crit.reward.mean()))
+            print('{} iter : train loss {}, acc : {}, reward_mean : {}'.format(iteration,loss.data, acc, rl_crit.reward.mean()))
         
         if iteration % params['mine_hard_every'] == 0 and iteration > 0 and params['mine_hard']:
             make_graph(ve, cca, loader, 'train', params, xp)
