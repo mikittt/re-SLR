@@ -1,4 +1,5 @@
-re-implemented speaker-listener-reinforcer (with ResNet)
+# re-implemented speaker-listener-reinforcer (with ResNet)
+URL: https://arxiv.org/pdf/1612.09542.pdf
 
 ## preprocess
 ```
