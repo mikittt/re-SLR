@@ -27,7 +27,7 @@ def train_vl(params):
     graph_dir = osp.join('log_graph', params['dataset']+'_'+params['splitBy'])
     model_dir = osp.join(params['save_dir'], 'model', params['dataset']+'_'+params['splitBy'])
     if not osp.isdir(graph_dir):
-        os.mkdir(graph_dir)
+        os.makedirs(graph_dir)
     if not osp.isdir(model_dir):
         os.makedirs(model_dir)
         
