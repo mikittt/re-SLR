@@ -26,3 +26,15 @@ if you want to use attention in reinforcer and listener, please include 'attenti
 ```
 python train.py -d refcocog -s google -g 0 --id slr --id2 ver1
 ```
+
+## evaluation
+
+- generation
+```
+python eval_generation.py -d refcocog -s google -g 1 --id slr --id2 ver1 -split val --batch_size 1
+```
+
+- comprehension
+```
+python eval_comprehension.py -d refcocog -s google -g 1 --id attention -split val --batch_size 1
+```
