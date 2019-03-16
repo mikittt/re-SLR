@@ -53,7 +53,7 @@ def calc_rank_acc(score, ranks):
 def language_eval(pred, split, params):
     sys.path.insert(0, osp.join('pyutils', 'refer2'))
     from refer import REFER
-    refer = REFER(params['data_root'], params['dataset'], params['splitBy'], old_version=False)
+    refer = REFER(params['data_root'], '_', params['dataset'], params['splitBy'], old_version=False)
     
     sys.path.insert(0, osp.join('pyutils', 'refer2', 'evaluation'))
     from refEvaluation import RefEvaluation
